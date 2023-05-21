@@ -11,7 +11,9 @@ char **split(char *str, char *delim);
 
 char *_getenv(char **envp, char *var, unsigned int n);
 
-void exec_cmd(char **parsed_cmd, char **envp);
+void exec_cmd(char **parsed_cmd, char **envp, char *line);
+
+void readline(char **line, size_t len);
 
 /* str_utils functions' prototype */
 char *_strcpy(char *dest, char *src);

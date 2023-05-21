@@ -15,17 +15,15 @@
 
 int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv, char **envp)
 {
-	int status;
 	size_t n = 0;
 	char *line = NULL, **tokens;
-	char *prmpt = "(cisfun)$ ";
-	pid_t pid;
+	char *prmpt = "$ ";
 
 	while (1)
 	{
-		write(STDOUT_FILENO, prmpt, _strlen(prmpt));
-		line = NULL;	
-		_getline(&line, &n, stdin);
+		write(STDOUT_FILENO, prmpt, _strlen(prmpt));	
+		line = NULL;
+		readline(&line, n);
 
 		tokens = split(line, " ");
 		if (_strcmp(tokens[0], "exit") == 0)
@@ -36,29 +34,14 @@ int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv, 
 		}
 		else
 		{
-			pid = fork();
-			if (pid == 0)
-			{
-				execve(tokens[0], tokens, envp);
-
-				/* The following will only be executed if execve failed */
-				perror(tokens[0]);
-				free(line);
-				free(tokens);
-				exit(0);
-			}
-			else if (pid > 0)
-			{
-				wait(&status);
-			}
-			else
-			{
-				perror("fork");
-			}
+			exec_cmd(tokens, envp, line);
 		}
-
 		free(tokens);
 		free(line);
+		if (isatty(STDIN_FILENO) == 0)
+		{
+			exit (0);
+		}
 	}
 	return (0);
 }
