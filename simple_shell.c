@@ -32,9 +32,7 @@ int main(int __attribute__((unused)) argc, char **argv, char **envp)
 		
 		if (_strcmp(tokens[0], "exit") == 0)
 		{
-			free(tokens);
-			free(line);
-			exit(0);
+			exit_shell(tokens, line);
 		}
 		cmd = get_cmd_exec(tokens[0], envp);
 		if (cmd == NULL)
@@ -49,7 +47,6 @@ int main(int __attribute__((unused)) argc, char **argv, char **envp)
 			if (*tokens[0] == '/')
 			{
 				exec_cmd(tokens, envp, line);
-				free(line);
 			}
 			else
 			{
@@ -61,10 +58,10 @@ int main(int __attribute__((unused)) argc, char **argv, char **envp)
 				tokens[0] = _strcpy(tokens[0], cmd);
 				exec_cmd(tokens, envp, line);
 				free(tokens[0]);
+				free(tokens);
 				free(cmd);
 			}
 		}
-		free(tokens);
 		if (isatty(STDIN_FILENO) == 0)
 		{
 			exit(0);

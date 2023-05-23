@@ -19,6 +19,8 @@ char *cmd_stat(char *cmd, char **envp);
 
 char *get_cmd_exec(char *cmd, char **envp);
 
+void exit_shell(char **ctokens, char *line);
+
 
 /* str_utils functions' prototype */
 char *_strcpy(char *dest, char *src);
