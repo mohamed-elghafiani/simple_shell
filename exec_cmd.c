@@ -12,6 +12,8 @@
  *	and depending the pid returned by fork() we execute the
  *	command in the chold process and wait for it in the parent process
  * @parsed_cmd: an array representing the command to exec along with args
+ * @envp: the environment variable
+ * @line: the line of characteres entered in the shell in interactive mode
  * Return: Nothing
  */
 

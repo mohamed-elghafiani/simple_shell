@@ -15,10 +15,19 @@ void exec_cmd(char **parsed_cmd, char **envp, char *line);
 
 void readline(char **line, size_t len);
 
+char *cmd_stat(char *cmd, char **envp);
+
+char *get_cmd_exec(char *cmd, char **envp);
+
+
 /* str_utils functions' prototype */
 char *_strcpy(char *dest, char *src);
 char *_strncpy(char *dest, char *src, int n);
 int _strcmp(char *s1, char *s2);
 int _strlen(char *s);
+
+/* Other util functions' prototype */
+ssize_t nconcat(int n, char **strcat, ...);
+
 
 #endif

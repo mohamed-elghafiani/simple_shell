@@ -2,8 +2,11 @@
 #include "simple_shell.h"
 
 /**
- * get_path - a function that extract the PATH variables
+ * _getenv - a function that extract the PATH variables
  *
+ * @envp: the environment variable
+ * @var: the variable we would like to retrieve from the environement
+ * @n: the length of @var
  * Return: a string of the PATH variables
  */
 
