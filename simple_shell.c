@@ -16,8 +16,7 @@
 int main(int __attribute__((unused)) argc, char **argv, char **envp)
 {
 	size_t n = 0;
-	char *line = NULL, **tokens, *cmd;
-	char *prmpt = "$ ";
+	char *line = NULL, **tokens, *cmd_exec, *prmpt = "$ ";
 
 	while (1)
 	{
@@ -27,40 +26,20 @@ int main(int __attribute__((unused)) argc, char **argv, char **envp)
 		}
 		line = NULL;
 		readline(&line, n);
-
 		tokens = split(line, " ");
-		
-		if (_strcmp(tokens[0], "exit") == 0)
+		exit_shell(tokens, line);
+
+		cmd_exec = get_cmd_exec(tokens[0], envp);
+		if (cmd_exec == NULL)
 		{
-			exit_shell(tokens, line);
-		}
-		cmd = get_cmd_exec(tokens[0], envp);
-		if (cmd == NULL)
-		{
+			print_error(argv[0], tokens[0]);
 			free(tokens);
 			free(line);
-			perror(argv[0]);
 			continue;
 		}
 		else
 		{
-			if (*tokens[0] == '/')
-			{
-				exec_cmd(tokens, envp, line);
-			}
-			else
-			{
-				tokens[0] = realloc(tokens[0], _strlen(cmd) + 1);
-				if (tokens[0] == NULL)
-				{
-					perror("realloc");
-				}
-				tokens[0] = _strcpy(tokens[0], cmd);
-				exec_cmd(tokens, envp, line);
-				free(tokens[0]);
-				free(tokens);
-				free(cmd);
-			}
+			handle_cmd(tokens, envp, cmd_exec, line);
 		}
 		if (isatty(STDIN_FILENO) == 0)
 		{

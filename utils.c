@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <stdarg.h>
 #include "simple_shell.h"
 
@@ -49,4 +50,71 @@ ssize_t nconcat(int n, char **strcat, ...)
 	return (0);
 }
 
+/**
+ * print_error - a function that get invoked when a cmd not found
+ *
+ * @argv: the name of the executable
+ * @cmd: the command passed
+ * Return: Nothing
+ */
+void print_error(char *argv, char *cmd)
+{
+	write(STDERR_FILENO, argv, _strlen(argv));
+	write(STDERR_FILENO, ": 1: ", 5);
+	write(STDERR_FILENO, cmd, _strlen(cmd));
+	write(STDERR_FILENO, ": not found\n", 12);
+}
+
+
+/**
+ * free_alloc - a function that frees n allocated variables
+ *
+ * @n: the number of variables to free
+ * @alloc1: the first variable to free
+ * Return: Nothing
+ */
+void free_alloc(int n, char *alloc1, ...)
+{
+	va_list vp;
+	int i = 0;
+
+	va_start(vp, alloc1);
+	for (i = 0; i < n; i++)
+	{
+		free(va_arg(vp, char *));
+	}
+}
+
+/**
+ * handle_cmd - a function that handles a cmd when it's valid
+ *
+ * @tokens: command passed parsed as tokens
+ * @envp: environment parameter
+ * @cmd_exec: command executable from path
+ * @line: the full command line passed as a string
+ * Return: Nothing
+ */
+
+void handle_cmd(char **tokens, char **envp, char *cmd_exec, char *line)
+{
+	if (*tokens[0] == '/')
+	{
+		exec_cmd(tokens, envp, line);
+		free(tokens);
+		free(line);
+	}
+	else
+	{
+		tokens[0] = realloc(tokens[0], _strlen(cmd_exec) + 1);
+		if (tokens[0] == NULL)
+		{
+			perror("realloc");
+		}
+		tokens[0] = _strcpy(tokens[0], cmd_exec);
+		exec_cmd(tokens, envp, line);
+		free(tokens[0]);
+		free(tokens);
+		free(cmd_exec);
+	}
+}
 

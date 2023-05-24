@@ -30,6 +30,10 @@ int _strlen(char *s);
 
 /* Other util functions' prototype */
 ssize_t nconcat(int n, char **strcat, ...);
+void print_error(char *argv, char *cmd);
+void free_alloc(int n, char *alloc1, ...);
+void handle_cmd(char **tokens, char **envp, char *cmd_exec, char *line);
+
 
 
 #endif

@@ -12,17 +12,20 @@ void exit_shell(char **ctokens, char *line)
 {
 	int status;
 
-	if (ctokens[1] == NULL)
+	if (_strcmp(ctokens[0], "exit") == 0)
 	{
-		free(ctokens);
-		free(line);
-		exit(0);
-	}
-	else
-	{
-		status = atoi(ctokens[1]);
-		free(ctokens);
-		free(line);
-		exit(status);
+		if (ctokens[1] == NULL)
+		{
+			free(ctokens);
+			free(line);
+			exit(0);
+		}
+		else
+		{
+			status = atoi(ctokens[1]);
+			free(ctokens);
+			free(line);
+			exit(status);
+		}
 	}
 }
